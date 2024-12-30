@@ -1,4 +1,22 @@
+# 1. 网页开发基础
+- `<html>`标签位于`<!DOCTYPE>`声明之后
+
+- 表单主要由`表单控件`、`提示信息`、`表单域`3个部分构成
+
+- method属性用于设置表单数据的提交方式，它有`GET`和`POST`两个值。其中，`GET`为默认值
+
+    - GET方式提交的数据将显示在浏览器的地址栏中，保密性差且有数据量限制；
+    - POST提交方式不仅保密性好，而且可以提交大量的数据。
+
+- `<a href=” ” target=” ”></a>`     
+    - `href`属性用于指定链接指向的页面URL，
+    - `target`属性用于指定页面的打开方式。
+
 # 2. Java Web 概述
+- 程序开发体系架构：
+    - `C/S结构`（客户端/服务器结构）
+    - `B/S结构`（浏览器/服务器结构）
+
 - Tomcat服务器的默认端口为( )
     - A. 8888
     - B. 8080
@@ -15,7 +33,52 @@
 
     正确答案：A
 
+# 3. HTTP协议
+- `HTTP请求消息`和`HTTP响应消息`统称为`HTTP消息`
+
+- `请求行`、`请求头`和`实体内容`3个部分组成一个完整的请求消息。
+
+- HTTP请求行的构成：
+    - 请求方式
+    - 资源路径
+    - 所使用的HTTP协议版本。
+
+- web开发中常见的状态码及含义：
+    - `200` 表示请求成功
+    - `404` 表示服务器找不到请求资源
+    - `500` 表示服务器发生错误
+
 # 4. Servlet基础
+- Servlet运行在`Web服务器端`, 使用`java`语言编写
+
+- Servlet就是一种实现了Servlet接口的类，它由`Web容器创建并调用`，用于接收和响应用户的请求。
+
+- ServletContext接口的作用：
+    - 获取Web应用程序的初始化参数
+    - 实现多个Servlet对象共享数据
+    - 读取Web应用下的资源文件
+
+- 请求重定向：
+    ```java
+    HttpServletResponse.sendRedirect()
+    ```
+
+- 请求转发：
+    ```java
+    HttpServletRequest.getRequestDispatcher(String path).forward(ServletRequest request, ServletResponse response)
+    ```
+
+- 请求转发与重定向的区别：
+    - URL变化：
+        - 请求转发不会改变，
+        - 重定向会更新为新的URL
+    - 请求次数：
+        - 请求转发只涉及一次请求
+        - 重定向至少涉及两次请求。
+    - 实现的接口不同，
+        - 实现请求转发的接口是`HttpServletRequest`
+        - 实现重定向的接口是`HttpServletResponse`
+
 - 在编写Servlet时需要( )
     - A. 继承自Servlet
     - B. 实现HttpRequestServlet
@@ -206,6 +269,18 @@
     正确答案: C
 
 # 5. 会话及会话技术
+- 会话技术是`服务器跟踪用户信息`的技术。
+
+- Cookie和Session的区别
+    - Cookie将信息存储在浏览器端，是客户端技术；Session将数据保存在服务器端，是服务器端技术。
+    - Cookie安全性低，Session安全性更高。
+    - Cookie有大小和数量的限制，Session没有明确的数据量限制。
+    - Cookie可以设置过期时间，因此可以在较长时间内保持有效，甚至在用户关闭浏览器后仍然存在；Session通常只在用户浏览网站期间有效，当用户关闭浏览器或一段时间不活动后，会话可能会自动失效或被服务器销毁。
+
+- session有效期默认为30min，修改Session有效期的方法：
+    - web.xml
+    - setMaxInactiveInterval()方法
+    - tomcat中修改web.xml
 
 - 如何创建Cookie对象?()
     - A. 使用newCookie语句
@@ -232,6 +307,31 @@
     正确答案: A
 
 # 6. JSP技术
+- 什么是JSP？
+
+    JSP(Java Server Pages,Java服务器页面)是Servlet更高级别的扩展。在JSP文件中，HTML代码与Java代码共同存在，其中，HTML代码用于实现网页中静态内容的显示，Java代码用于实现网页中动态内容的显示。
+
+- JSP的隐式对象
+    - out 用于页面输出
+    - request 得到用户请求信息
+    - response 服务器向客户端的回应信息
+    - config 服务器配置，可以取得初始化参数
+    - session 保存用户的信息 
+    - application 所有用户的共享信息
+    - page 当前页面对象
+
+- pageContext对象的作用范围（范围从小到大）
+    - `pageContext.PAGE_SCOPE` 表示页面范围
+    - `pageContext.REQUEST_SCOPE` 表示请求范围
+    - `pageContext.SESSION_SCOPE` 表示会话范围
+    - `pageContext.APPLICATION_SCOPE` 表示Web应用程序范围
+
+- JSP运行原理：
+    - 客户端发送请求，请求访问JSP文件;
+    - JSP容器先将该JSP文件转换成一个Java源文件
+    - 转换成功则JSP容器将生成的Java源文件编译成相应的字节码文件*.class
+    - 该.class文件就是一个Servlet，Servlet容器会像处理其他Servlet一样处理它。
+
 - 在JSP中,只有一行代码:`<%=A+B%>`,运行将输出()。
     - A. A+B
     - B. AB
@@ -413,6 +513,16 @@
     正确答案: C
 
 # JavaBean与JSP开发模型
+- JavaBean的规范
+    - 有无参构造函数
+    - 属性必须私有化
+    - 私有属性都有public方法暴露，方法有命名规则
+
+- MVC设计模式：
+    - 模型
+    - 视图
+    - 控制器
+
 - 假设创建JavaBean的类中有一个int型的属性num,下列哪个是正确的设置该属性的方法( )
     - A. `public void setNum(int num) { this.num = num;}`
     - B. `public setNum(int num) {this.num = num;}`
@@ -455,6 +565,15 @@
     正确答案: C
 
 # 9. Serviet高级
+- 什么是Filter？
+
+    - Filter被称为过滤器，它位于客户端和处理程序之间，能够对请求和响应进行检查和修改。
+
+- Filter的生命周期
+    - init
+    - doFilter
+    - destroy
+
 - 使用Servlet过滤器时,需要在web.xml通过( )元素将过滤器映射到Web资源。
     - A. `<filter>`
     - B. `<filter-mapping>`
@@ -494,3 +613,37 @@
     - C. `<inputtype="file">`标签必须把将表单页面的method属性设置为get方式
     - D. `<inputtype="file">`标签的enctype属性设置为"multipart/form-data"类型
 
+    正确答案: C
+
+# 10. JDBC
+- 什么是JDBC？
+
+    JDBC是一套用于执行SQL语句的Java API
+
+- 实现JDBC的步骤
+    1. 加载并注册数据库驱动
+        ```java
+        DriverManager.registerDriver(Driver driver);
+        ```
+    2. 通过DriveManager获取数据库连接
+        ```java
+        Connection conn = DriverManager.getConnection(String url, String user, String pwd);
+        ```
+    3. 通过Connection对象获取Statement对象
+        ```java
+        Statement stmt = conn.createStatement();
+        ```
+    4. 使用Statement对象执行SQL语句
+        ```java
+        ResultSet rs = stmt.executeQuery(sql语句);
+        ```
+    5. 操作ResultSet结果集
+    6. 关闭连接，释放资源
+
+# 11. 数据库连接池和DBUtils工具
+- 什么是数据库连接池？
+
+    负责分配管理和释放数据库链接，允许应用重复使用现有的数据库链接而不是频繁重新建立
+
+- 数据库连接池的原理。
+    ![11](./img/11.jpg "11")
